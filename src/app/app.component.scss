@@ -1,0 +1,19 @@
+.countries {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
+}
+
+.country {
+  width: 240px;
+
+  &__content {
+    padding: 1rem;
+  }
+
+  &__flag > img {
+    width: 100%;
+    object-fit: cover;
+    aspect-ratio: 2/1;
+  }
+}
