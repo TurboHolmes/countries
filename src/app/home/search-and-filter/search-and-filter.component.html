@@ -1,0 +1,13 @@
+<form class="filter" [formGroup]="filterForm">
+  <div class="filter__search">
+    <input formControlName="search" type="search" name="search" id="search" />
+  </div>
+  <div class="filter__select">
+    <select formControlName="region">
+      <option value="" selected disabled hidden>Select a Region</option>
+      <option *ngFor="let region of regions" [value]="region">
+        {{ region }}
+      </option>
+    </select>
+  </div>
+</form>

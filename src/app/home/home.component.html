@@ -1,3 +1,4 @@
+<app-search-and-filter (changes)="filterChange($event)"></app-search-and-filter>
 <div class="countries">
   <ng-container *ngFor="let country of countries$ | async">
     <div class="country">

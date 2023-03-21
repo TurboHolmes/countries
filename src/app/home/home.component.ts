@@ -5,7 +5,7 @@ import { ICountry, ApiService } from '../core';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
   countries$?: Observable<ICountry[]>;
@@ -15,7 +15,13 @@ export class HomeComponent {
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
-    this.countries$ = this.apiService.getAllCountry().pipe(takeUntil(this._destroy$));
+    this.countries$ = this.apiService
+      .getAllCountry()
+      .pipe(takeUntil(this._destroy$));
+  }
+
+  filterChange(changes: { search: string; region: string }) {
+    console.log(changes);
   }
 
   ngOnDestroy(): void {
