@@ -7,20 +7,6 @@ import { ApiService, ICountry } from './core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit, OnDestroy {
-  title = 'countries';
-  countries$?: Observable<ICountry[]>;
-
-  private _destroy$ = new Subject<boolean>();
-
-  constructor(private apiService: ApiService) {}
-
-  ngOnInit(): void {
-    this.countries$ = this.apiService.getAllCountry().pipe(takeUntil(this._destroy$));
-  }
-
-  ngOnDestroy(): void {
-    this._destroy$.next(true);
-    this._destroy$.complete();
-  }
+export class AppComponent {
+  constructor() {}
 }

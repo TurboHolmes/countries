@@ -1,0 +1,17 @@
+<div class="countries">
+  <ng-container *ngFor="let country of countries$ | async">
+    <div class="country">
+      <div class="country__flag">
+        <img [src]="country.flag" alt="flag" />
+      </div>
+      <div class="country__content">
+        <h2 class="country__name">{{ country.name }}</h2>
+        <p class="country__pop">
+          Population: {{ country.population | number : "1.0" : "en-US" }}
+        </p>
+        <p class="country__region">Region: {{ country.region }}</p>
+        <p class="country__captial">Capital: {{ country.capital }}</p>
+      </div>
+    </div>
+  </ng-container>
+</div>
