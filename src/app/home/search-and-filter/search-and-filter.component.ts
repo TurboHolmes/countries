@@ -19,7 +19,13 @@ import {
 export class SearchAndFilterComponent {
   @Output() changes: Observable<{ search: string; region: string }> = EMPTY;
 
-  readonly regions = ['Asia', 'Africa', 'America'];
+  readonly regions = [
+    { value: 'africa', region: 'Africa' },
+    { value: 'americas', region: 'America' },
+    { value: 'asia', region: 'Asia' },
+    { value: 'europe', region: 'Europe' },
+    { value: 'oceania', region: 'Oceania' },
+  ];
 
   filterForm = this._fb.nonNullable.group({
     search: [''],

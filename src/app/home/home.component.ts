@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { map, Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import { ICountry, ApiService } from '../core';
 
 @Component({
@@ -10,18 +10,39 @@ import { ICountry, ApiService } from '../core';
 export class HomeComponent {
   countries$?: Observable<ICountry[]>;
 
+  private filterQuery$ = new Subject<{ search: string; region: string }>();
   private _destroy$ = new Subject<boolean>();
 
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
-    this.countries$ = this.apiService
-      .getAllCountry()
-      .pipe(takeUntil(this._destroy$));
+    this.countries$ = this.filterQuery$.pipe(
+      switchMap((filterQuery) => {
+        return this.apiService.getAllCountry().pipe(
+          map((countries) =>
+            countries
+              .filter((country) => {
+                if (filterQuery.region === '') return true;
+
+                return (
+                  country.region.toLowerCase() ===
+                  filterQuery.region.toLowerCase()
+                );
+              })
+              .filter((country) =>
+                country.name
+                  .toLowerCase()
+                  .includes(filterQuery.search.toLowerCase())
+              )
+          )
+        );
+      }),
+      takeUntil(this._destroy$)
+    );
   }
 
-  filterChange(changes: { search: string; region: string }) {
-    console.log(changes);
+  onFilterChange(changes: { search: string; region: string }) {
+    this.filterQuery$.next(changes);
   }
 
   ngOnDestroy(): void {

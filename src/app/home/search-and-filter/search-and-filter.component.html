@@ -5,8 +5,8 @@
   <div class="filter__select">
     <select formControlName="region">
       <option value="" selected disabled hidden>Select a Region</option>
-      <option *ngFor="let region of regions" [value]="region">
-        {{ region }}
+      <option *ngFor="let data of regions" [value]="data.value">
+        {{ data.region }}
       </option>
     </select>
   </div>
