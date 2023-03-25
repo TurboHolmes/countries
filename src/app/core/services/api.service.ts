@@ -1,31 +1,42 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, find, from, map, share, switchMap } from 'rxjs';
-import { ICountry } from '../models';
+import { catchError, of, share } from 'rxjs';
+import { Country } from '../models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  private _countries = new BehaviorSubject<ICountry[]>([]);
+  private readonly apiUrl = 'https://restcountries.com/v3.1';
 
-  constructor(private http: HttpClient) {
-    this.loadCountries();
+  constructor(private http: HttpClient) {}
+
+  getCountries() {
+    return this.http.get<Country[]>(`${this.apiUrl}/all`).pipe(share());
   }
 
-  loadCountries() {
+  getCountriesByRegion(region: string) {
+    return this.http.get<Country[]>(`${this.apiUrl}/region/${region}`);
+  }
+
+  getCountryByName(name: string) {
     return this.http
-      .get<ICountry[]>('/assets/data.json')
-      .subscribe(this._countries);
+      .get<Country[]>(`${this.apiUrl}/name/${name}?fullText=true`)
+      .pipe(
+        catchError((err) => of([])),
+        share()
+      );
   }
 
-  getAllCountry() {
-    return this._countries.asObservable();
-  }
-
-  getCountry(countryName: string) {
-    return from(this._countries.getValue()).pipe(
-      find((country) => country.name === countryName)
+  getCountriesByCode(codes: string[]) {
+    return this.http.get<Country[]>(
+      `${this.apiUrl}/alpha?codes=${codes.join(',')}`
     );
+  }
+
+  searchCountryByName(name: string) {
+    return this.http
+      .get<Country[]>(`${this.apiUrl}/name/${name}`)
+      .pipe(catchError((err) => of([])));
   }
 }

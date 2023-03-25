@@ -3,13 +3,13 @@
 ></app-search-and-filter>
 <div class="countries">
   <ng-container *ngFor="let country of countries$ | async">
-    <a routerLink="detail" [queryParams]="{ country: country.name }">
+    <a routerLink="detail" [queryParams]="{ country: country.name.common }">
       <div class="country">
         <div class="country__flag">
-          <img [src]="country.flag" alt="flag" />
+          <img [src]="country.flags.svg" [alt]="country.flags.alt" />
         </div>
         <div class="country__content">
-          <h2 class="country__name">{{ country.name }}</h2>
+          <h2 class="country__name">{{ country.name.official }}</h2>
           <p class="country__pop">
             Population: {{ country.population | number : "1.0" : "en-US" }}
           </p>

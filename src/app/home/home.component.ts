@@ -1,14 +1,7 @@
 import { Component } from '@angular/core';
-import {
-  combineLatest,
-  map,
-  Observable,
-  Subject,
-  switchMap,
-  takeUntil,
-  tap,
-} from 'rxjs';
-import { ICountry, ApiService } from '../core';
+import { intersectionBy } from 'lodash';
+import { combineLatest, iif, map, Observable, Subject, switchMap } from 'rxjs';
+import { ApiService, Country } from '../core';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +9,7 @@ import { ICountry, ApiService } from '../core';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-  countries$?: Observable<ICountry[]>;
+  countries$?: Observable<Country[]>;
 
   private _filterQuery$ = new Subject<{ search: string; region: string }>();
   private _destroy$ = new Subject<boolean>();
@@ -24,25 +17,25 @@ export class HomeComponent {
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
-    this.countries$ = combineLatest([
-      this._filterQuery$,
-      this.apiService.getAllCountry(),
-    ]).pipe(
-      map(([filterQuery, countries]) =>
-        countries
-          .filter((country) => {
-            if (filterQuery.region === '') return true;
-
-            return (
-              country.region.toLowerCase() === filterQuery.region.toLowerCase()
-            );
-          })
-          .filter((country) =>
-            country.name
-              .toLowerCase()
-              .includes(filterQuery.search.toLowerCase())
+    this.countries$ = this._filterQuery$.pipe(
+      switchMap((filterQuery) => {
+        return combineLatest([
+          iif(
+            () => filterQuery.search !== '',
+            this.apiService.searchCountryByName(filterQuery.search),
+            this.apiService.getCountries()
+          ),
+          iif(
+            () => filterQuery.region !== 'all',
+            this.apiService.getCountriesByRegion(filterQuery.region),
+            this.apiService.getCountries()
+          ),
+        ]).pipe(
+          map(([countriesBySearch, countriesByRegion]) =>
+            intersectionBy(countriesByRegion, countriesBySearch, 'cca3')
           )
-      )
+        );
+      })
     );
   }
 

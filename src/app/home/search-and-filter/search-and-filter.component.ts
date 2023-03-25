@@ -1,14 +1,12 @@
-import { Component, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, Output } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import {
   combineLatest,
   debounceTime,
   distinctUntilChanged,
   EMPTY,
-  filter,
   Observable,
   startWith,
-  tap,
 } from 'rxjs';
 
 @Component({
@@ -29,7 +27,7 @@ export class SearchAndFilterComponent {
 
   filterForm = this._fb.nonNullable.group({
     search: [''],
-    region: [''],
+    region: ['all'],
   });
 
   constructor(private _fb: FormBuilder) {
@@ -43,7 +41,8 @@ export class SearchAndFilterComponent {
         ) ?? EMPTY;
 
     const region$ =
-      this.filterForm.get('region')?.valueChanges.pipe(startWith('')) ?? EMPTY;
+      this.filterForm.get('region')?.valueChanges.pipe(startWith('all')) ??
+      EMPTY;
 
     this.changes = combineLatest({ search: search$, region: region$ });
   }

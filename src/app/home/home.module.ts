@@ -5,12 +5,8 @@ import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { SearchAndFilterComponent } from './search-and-filter/search-and-filter.component';
 
-
 @NgModule({
   declarations: [HomeComponent, SearchAndFilterComponent],
-  imports: [
-    SharedModule,
-    HomeRoutingModule
-  ]
+  imports: [SharedModule, HomeRoutingModule],
 })
-export class HomeModule { }
+export class HomeModule {}

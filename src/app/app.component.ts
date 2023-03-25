@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { ApiService, ICountry } from './core';
+import { ApiService, Country } from './core';
 
 @Component({
   selector: 'app-root',

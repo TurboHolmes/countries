@@ -1,27 +1,29 @@
-<ng-container *ngIf="details$ | async as country">
+<ng-container *ngIf="country$ | async as country">
   <div class="country">
     <div class="country__flag">
-      <img [src]="country.flag" alt="flag" />
+      <img [src]="country.flags.svg" [alt]="country.flags.alt" />
     </div>
     <div class="country__content">
-      <h2 class="country__name">{{ country.name }}</h2>
-      <p class="country__native-name">Native Name:{{ country.nativeName }}</p>
+      <h2 class="country__name">{{ country.name.official }}</h2>
+      <p class="country__native-name">
+        Native Name:{{ country.name.common }}
+      </p>
       <p class="country__pop">
         Population: {{ country.population | number : "1.0" : "en-US" }}
       </p>
       <p class="country__region">Region: {{ country.region }}</p>
       <p class="country__sub-region">Sub Region: {{ country.subregion }}</p>
       <p class="country__captial">Capital: {{ country.capital }}</p>
-      <p class="country__tld">Top Level Domain: {{ country.topLevelDomain }}</p>
+      <p class="country__tld">Top Level Domain: {{ country.tld }}</p>
       <p class="country__currency">
         Currencies: {{ transformCurrencies(country.currencies) }}
       </p>
       <p class="country__language">
         Languages: {{ transformLanguages(country.languages) }}
       </p>
-      <p class="country__borders" *ngIf="country.borders">
+      <p class="country__borders" *ngIf="borders$ | async as borders">
         Border Countries:
-        <span *ngFor="let border of country.borders">{{ border }}</span>
+        <span *ngFor="let border of borders">{{ border }}</span>
       </p>
     </div>
   </div>
