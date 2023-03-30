@@ -1,4 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;600;800&display=swap");
+
+:root {
+  --color-bg: hsl(207, 26%, 17%);
+  --color-primary: hsl(0, 0%, 100%);
+  --color-secondary: hsl(209, 23%, 22%);
+}
 
 html,
 body {
@@ -7,6 +14,13 @@ body {
 }
 
 body {
-  max-width: 1600px;
+  max-width: 1440px;
+  margin: 0;
+  padding: 0;
   margin-inline: auto;
+  padding-inline: 1rem;
+  color: var(--color-primary);
+  background-color: var(--color-bg);
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 14px;
 }

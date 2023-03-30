@@ -5,9 +5,7 @@
     </div>
     <div class="country__content">
       <h2 class="country__name">{{ country.name.official }}</h2>
-      <p class="country__native-name">
-        Native Name:{{ country.name.common }}
-      </p>
+      <p class="country__native-name">Native Name:{{ country.name.common }}</p>
       <p class="country__pop">
         Population: {{ country.population | number : "1.0" : "en-US" }}
       </p>
@@ -23,7 +21,12 @@
       </p>
       <p class="country__borders" *ngIf="borders$ | async as borders">
         Border Countries:
-        <span *ngFor="let border of borders">{{ border }}</span>
+        <a
+          *ngFor="let border of borders"
+          routerLink="/detail"
+          [queryParams]="{ country: border }"
+          >{{ border }}</a
+        >
       </p>
     </div>
   </div>
